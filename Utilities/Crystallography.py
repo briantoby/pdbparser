@@ -344,8 +344,8 @@ class CrystalMaker(object):
         posLUT   = OrderedDict()
         namesLUT = {}
         for aIdx, (el,x,y,z,o) in enumerate(self.__atoms ):
-            #pos = [i.replace('x',str(x)).replace('y',str(y)).replace('z',str(z)).split(',') for i in self.__symOps]
-            pos = [[i[0].replace('x',str(x)), i[1].replace('y',str(y)), i[2].replace('z',str(z))] for i in self.__symOps]
+            pos = [[j.replace('x',str(x)).replace('y',str(y)).replace('z',str(z)).split(',') for j in i] for i in self.__symOps]
+            #pos = [[i[0].replace('x',str(x)), i[1].replace('y',str(y)), i[2].replace('z',str(z))] for i in self.__symOps]
             pos = sorted(set([tuple([eval(i)%1 for i in s]) for s in pos]))
             for p in pos:
                 nm = "%s%i"%(el,len(namesLUT)+1)
