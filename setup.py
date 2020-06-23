@@ -75,10 +75,12 @@ LONG_DESCRIPTION = ["It's a Protein Data Bank (.pdb) files manipulation package 
                     "At any time and stage of data manipulation, a pdb file of all atoms or a subset of atoms can be exported to a pdb file."]
 DESCRIPTION      = [ LONG_DESCRIPTION[0] ]
 
-# get package info
-#PACKAGE_INFO={}
-#execfile(convert_path( os.path.join(PACKAGE_PATH, PACKAGE_NAME,'__pkginfo__.py') ), PACKAGE_INFO)
-from pdbparser import __version__
+## get package info
+PACKAGE_INFO={}
+infoPath = convert_path('__pkginfo__.py')
+with open(infoPath) as fd:
+    exec(fd.read(), PACKAGE_INFO)
+
 
 ##############################################################################################
 ##################################### USEFUL DEFINITIONS #####################################
@@ -178,20 +180,16 @@ def find_data(where=".", exclude=DATA_EXCLUDE, exclude_directories=EXCLUDE_DIREC
 
 
 # get packages
-PACKAGES = get_packages(path=PACKAGE_PATH, exclude=(os.path.join(PACKAGE_NAME,"AMD"),
-                                                    os.path.join(PACKAGE_NAME,"docs")))
-# remove everything that is not pdbparser
-for package in list(PACKAGES):
-    if PACKAGE_NAME not in package:
-        PACKAGES.pop(package)
-#print PACKAGES
-#exit()
+PACKAGES = get_packages(path=PACKAGE_PATH, base='pdbparser',
+                        exclude=(os.path.join(PACKAGE_NAME,"AMD"),
+                                 os.path.join(PACKAGE_NAME,"docs")))
+PACKAGES[PACKAGE_NAME] = '.'
 
 # create meta data
 metadata = dict(name = PACKAGE_NAME,
                 packages=PACKAGES.keys(),
                 package_dir=PACKAGES,
-                version= __version__,
+                version= PACKAGE_INFO['__version__'] ,
                 author="Bachir AOUN",
                 author_email="bachir.aoun@e-aoun.com",
                 description = "\n".join(DESCRIPTION),
